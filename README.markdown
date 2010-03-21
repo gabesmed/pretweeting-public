@@ -20,11 +20,28 @@ To set up a local instance of pretweeting, follow the following steps.
    key/secret.
 4. Fill out the `pretweeting/apps/config/environment/local.py` file with 
    appropriate settings for your database and twitter access. You'll need:
-   - a twitter username/password for access to the streaming API.
-   - a twitter username/oauth token for auto-tweeting from an official account
-   - a twitter oAuth consumer key/secret for twitter authentication of users
-   - database user/password/host for connection to mysql
-   - your desired directories for a local datastore
+
+       # for database access
+       DATABASE_USER = '---'
+       DATABASE_PASSWORD = '---'
+       DATABASE_HOST = ''
+       
+       # for local data storage
+       LOCAL_DATA_DIR = "/Users/Gabe/pretweeting_data"
+       BULK_INSERT_DIR = "/Users/Gabe/pretweeting_data/bulk_insert"
+       
+       # for accessing the streaming API
+       TWITTER_USERNAME = '---'
+       TWITTER_PASSWORD = '---'
+       
+       # for tweeting and DMing from pretweeting account
+       TWITTER_OAUTH_TOKEN = '---'
+       TWITTER_DM_SCREENNAME = '---'
+       
+       # for twitter authorization
+       CONSUMER_KEY = '---'
+       CONSUMER_SECRET = '---'
+   
 5. Run `python manage.py syncdb` to create the database tables.
 6. Run `python manage.py runserver` to start the web server. At this point you 
    should be able to navigate to localhost:8000 to see a game with empty data
