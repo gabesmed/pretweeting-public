@@ -1,0 +1,26 @@
+<div class='page_link_set'>
+    page:
+    {% if show_first %}
+    {% for page in show_first %}
+    <a href='javascript:;' onclick='show_word_list("{{ page_subpath}}", {{ page }});'>{{ page }}</a> 
+    {% endfor %}
+        ...
+    {% endif %}
+
+    {% for page in prev_pages %}
+        <a href='javascript:;' onclick='show_word_list("{{ page_subpath}}", {{ page }});'>{{ page }}</a> 
+    {% endfor %}
+
+    <a class='active' href='javascript:;' onclick='show_word_list("{{ page_subpath}}", {{ page.number }});'>{{ page.number }}</a> 
+
+    {% for page in next_pages %}
+        <a href='javascript:;' onclick='show_word_list("{{ page_subpath}}", {{ page }});'>{{ page }}</a> 
+    {% endfor %}
+
+    {% if show_last %}
+    ...
+    {% for page in show_last %}
+    <a href='javascript:;' onclick='show_word_list("{{ page_subpath}}", {{ page }});'>{{ page }}</a> 
+    {% endfor %}
+    {% endif %}
+</div>

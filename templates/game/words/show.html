@@ -1,0 +1,191 @@
+{% load escapehash %}
+{% load priceformat %}
+{% load humanize %}
+{% load wordlink %}
+
+<script type="text/javascript">
+
+function addCommas(nStr) {
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+}
+
+var price = {{ price }};
+
+$(document).ready(function() {
+    url = "/words/chart_data/{{ word.id }}";
+    swfobject.embedSWF(
+      "{{ MEDIA_URL }}open-flash-chart.swf", "word_chart",
+      "400", "200", "9.0.0", "expressInstall.swf", {"data-file": url} );
+    
+    {% if not forbidden %}
+    $("#buy_grid li").click(update_shares);
+    update_shares();
+    
+    $("#buy_form").ajaxForm({
+        dataType: 'json',
+        beforeSubmit: function() {
+            return check_authentication();
+        },
+        success: order_success
+    })
+    {% endif %}
+});
+
+function check_authentication() {
+    {% if user.is_authenticated %}
+    return true;
+    {% else %}
+    window.location = '/auth/auth/';
+    return false;
+    {% endif %}
+}
+
+function are_tweets_ok() {
+    if ($("#id_tweet").length == 0) {
+        return 0;
+    } else if ($("#id_tweet").attr('checked')) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+function buy_word(quantity) {
+    if(!check_authentication()) { return; }
+    t = are_tweets_ok();
+    if(t == -1) { return; }
+    
+    make_order({
+        quantity: quantity,
+        word_id: {{ word.id }},
+        tweet: t,
+        order: 'B'
+    });
+}
+
+function sell_word(quantity) {
+    if(!check_authentication()) { return; }
+    t = are_tweets_ok();
+    if(t == -1) { return; }
+    
+    make_order({
+        quantity: quantity,
+        word_id: {{ word.id }},
+        tweet: t,
+        order: 'S'
+    });
+}
+
+function make_order(data) {
+    $("#purchasing input").attr("disabled", true);
+    $.ajax({
+        url: '{% url order %}',
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: order_success,
+        error: function(response) {
+            $("#purchasing input").attr("disabled", false);
+            set_status(response.responseText);
+        }
+    })
+}
+
+
+function order_success(data) {
+    set_discovery_header_link('portfolio_link');
+    $("#discovery_content").html(data['portfolio']);
+    $("#sub_content").html(data['word']);
+    set_status(data['message']);
+    $("#purchasing input").attr("disabled", false);
+}
+
+function set_status(msg) {
+    ($("#order_response")
+        .html(msg)
+        .slideDown("slow", function() {
+            ($(this)
+                .animate({opacity: 1.0}, 3000)
+                .slideUp("slow", function() {
+                    $(this).hide();
+                }));
+        }));
+}
+
+function update_shares() {
+    quantity = $("[name=quantity]:checked").val();
+    caption = "Buy " + addCommas(quantity) + " shares";
+    $("#buy_btn").val(caption);
+}
+</script>
+
+<div id='word_content'>
+    
+    <div id='word_chart'>
+    </div>
+    <div id='order_response'>
+    </div>
+    <div style='float: right;' class='small faded'>7 day chart, times in PST.</div>
+    <div class='bigprice'>
+        {% wordlink word %}: 
+        ${{ price|currency }}
+        {% slots_tag word %}
+    </div>
+</div>
+
+<div id='purchasing'>
+    {% if qty_held %}
+    <div id='sell_grid'>
+        You own {{ qty_held|quantity }} shares worth ${{ holding.current_value|currency }}, {{ holding.change|plusminuspercent|safe }} from purchase.
+        <br/>
+        {% for label, quantity, price in sell_units %}
+        <input id='sell_{{ unit }}' type='submit' onclick='sell_word({{ quantity }});' value='Sell {{ quantity }}'/>
+        for ${{ price|currency }}.
+        <br/>
+        {% endfor %}
+        {% if forbidden or not buy_units %}
+        <input id='id_tweet' type='checkbox' {% if tweets_ok %}checked{% endif %}>
+        <label for='id_tweet'>Post this order on twitter (ex. 'sell 100 pretweeting')</label>
+        <br/>
+        {% endif %}
+        There is a {{ commission_percent }}% fee on all sales.
+    </div>
+    {% endif %}
+    
+    {% if not forbidden %}
+    
+    <div id='buy_grid'>
+        {% ifequal limiter 'slots' %}
+        <div>This word takes {{ word.slots }} slot{{ word.slots|pluralize }}, and you have {{ slots_available|intcomma }} slots available. (popularly traded words take up more slots)</div>
+        {% else %}
+        <div>You have ${{ cash|currency }} in cash, and can afford {{ qty_afford|quantity }} shares.</div>
+        {% endifequal %}
+        {% if buy_message %}
+        <div>{{ buy_message }}</div>
+        {% endif %}
+        
+        {% for unit, price, slots in buy_units %}
+        <input id='buy_{{ unit }}' type='submit' onclick='buy_word({{ unit }});' value='Buy {{ unit|quantity }}'/>
+        for ${{ price|currency }}.
+        <span class='faint'>(will occupy {{ slots|intcomma }} slots)</span>
+        <br/>
+        {% endfor %}
+         <input id='id_tweet' type='checkbox' {% if tweets_ok %}checked{% endif %}>
+        <label for='id_tweet'>Post this order on twitter (ex. 'buy 100 pretweeting')</label>
+        <br/>
+    </div>
+    {% else %}
+    <p>{{ forbidden }}</p>
+    {% endif %}
+    
+</div>
+
+<div id='debug_sql'><!-- sql_log --></div>

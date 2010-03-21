@@ -1,0 +1,41 @@
+{% extends "data/words/widgets/base.html" %}
+
+{% load escapehash %}
+{% load priceformat %}
+{% load humanize %}
+{% load wordlink %}
+
+{% block head %}
+<script type="text/javascript">
+$(document).ready(function() {
+    url = "http://{{ data_url }}/words/chart_data/{{ word.id }}";
+    swfobject.embedSWF(
+      "{{ data_media_url }}open-flash-chart.swf", "word_chart",
+      "400", "200", "9.0.0", "expressInstall.swf", {"data-file": url} );
+});
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div id='word_content'>
+    
+    <div id='word_chart'>
+    </div>
+    <div id='order_response'>
+    </div>
+    <div style='float: right;' class='small faded'>All times in PST.</div>
+    <div class='bigprice'>
+        {{ word.content }}
+    </div>
+</div>
+<div id='sub_description'>
+    <p>
+        Mentioned in {{ percent|floatformat:2 }}% of twitter messages.
+    </p>
+</div>
+<p class='faint small'>
+    data via <a href="http://{{ data_url }}">{{ data_url }}</a>.
+</p>
+
+{% endblock %}

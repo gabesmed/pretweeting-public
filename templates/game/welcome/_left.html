@@ -1,0 +1,20 @@
+
+<div id='discovery_container'>
+    <div id='discovery_header'>
+        {% if user.is_authenticated %}
+        <a id='portfolio_link' href='javascript:;' onclick='show_portfolio();'>portfolio</a>
+        {% else %}
+        <a id='intro_link' href='javascript:;' onclick='show_intro();'>pretweeting</a>
+        {% endif %}
+        <a id='leaders_link' href='javascript:;' onclick='show_leaderboard();'>leaders</a>
+        <a id='chat_link' href='javascript:;' onclick='show_chat();'>chat</a>
+        <a id='trends_link' href='javascript:;' onclick='show_trends();'>research</a>
+        <a id='list_link' href='javascript:;' onclick='show_words();'>word list</a>
+        <a id='help_link' href='javascript:;' onclick='show_help();'>tips</a>
+        <span id='discovery_loading' style='float: right; display: none;'>
+            <img src='{{ MEDIA_URL }}loading.gif'/>
+        </span>
+    </div>
+    <div id='discovery_content'>
+    </div>
+</div>

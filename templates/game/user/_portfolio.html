@@ -1,0 +1,39 @@
+{% load humanize %}
+{% load priceformat %}
+{% load timezone %}
+
+{% if holdings %}
+    {% include "game/user/_holdings.html" %}
+{% else %}
+    <p>
+        You have <b>${{ user_round.cash|currency }}</b> available to spend.
+    </p>
+    {% if in_current_round %}
+        <p>
+            <b><span class='down'>Not sure what to buy?</span></b>
+            <a href='javascript:;' onclick='show_trends()'>Research word prices</a> with TimesWire, Twitter Trends, or recent pretweeting orders. Or <a href='javascript:;' onclick='show_chat()'>ask other pretweeters</a>.
+        </p>
+
+        <div>Here are a few suggestions:</div>
+        {% include "game/user/_suggestions.html" %}
+    {% endif %}
+{% endif %}
+
+{% if in_current_round %}
+    <div class='small'>
+        <a href='{% url reset %}' onclick="return confirm('Are you sure you\'d like to reset your portfolio? This will eliminate all your holdings, reset your cash to ${{ user_round.round.starting_cash|currency }}, and show your total number of times reset on the leaderboard.');">reset portfolio</a>
+    </div>
+{% else %}
+    <p>
+        <a class='call_to_action' href='{% url reset %}' onclick="return confirm('Are you sure you\'d like to join the current round? You\'ll be starting fresh with a new portfolio.');">Compete in {{ latest_round.name }}!</a><br/><span class='small faint'>(You can't compete in the new round until you start with a fresh portfolio.)</span>
+    </p>
+{% endif %}
+
+<p class='small'>
+    Prices updated {{ latest_batch.created_on|timesince }} ago.<br/>
+    The current time is {{ now|localtime|time:"fA"|lower }} PST.<br/>
+</p>
+
+<p>
+    Like this game? <a href='http://twitter.com/home?status=Playing pretweeting -- buy and sell words on twitter for (virtual) profit! (http://bit.ly/pretweeting)' target='_blank'>Tell your friends!</a>
+</p>

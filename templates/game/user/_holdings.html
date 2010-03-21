@@ -1,0 +1,37 @@
+{% load humanize %}
+{% load priceformat %}
+{% load wordlink %}
+
+<div class='small'>
+    ${{ user_round.cash|currency }} cash on hand.
+    <span class='slots'>&bull;</span>{% if user_round.over_max_slots %}<span class='down'>{{ user_round.slots_over_max }}</span> slots over maximum.{% else %}{{ user_round.slots_available }} slots available.{% endif %}
+</div>
+
+<table id='portfolio'>
+    {% for holding in holdings %}
+    <tr>
+        <td>
+        {% wordlink holding.word %}
+        {% slots_tag holding.word %}
+        x{{ holding.quantity|quantity }}
+        </td>
+        <td>${{ holding.current_value|currency }}</td>
+        <td>
+            {{ holding.change|plusminuspercent|safe }}
+        </td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td>total</td> 
+        <td><b>
+            <span class='{{ user_round.updown }}'>
+            ${{ user_round.current_value|currency }}
+            </span></b>
+        </td>
+        <td>
+            {{ user_round.change|plusminuspercent|safe }}
+        </td>
+    </tr>
+</table>
+
+<div>You're #{{ rank }} on the leaderboard!</div>

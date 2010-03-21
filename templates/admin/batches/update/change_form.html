@@ -1,0 +1,34 @@
+{% extends "admin/change_form.html" %}
+
+{% load i18n %}
+
+{% block after_field_sets %}
+
+<fieldset class='module'>
+    <h2>Batches</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Time zone</th>
+                <th>Messages</th>
+                <th>Words</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for batch in batches %}
+        <tr class='{% cycle "row1" "row2" %} has_original'>
+            <td class='original'>{{ batch.timezone.name }}</td>
+
+            {% with batch.total_messages as total_messages %}
+            {% with batch.count_set.count as total_counts %}
+            <td class='original'>{{ total_messages }}</td>
+            <td class='original'>{{ total_counts }}</td>
+            {% endwith %}
+            {% endwith %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</fieldset>
+
+{% endblock %}

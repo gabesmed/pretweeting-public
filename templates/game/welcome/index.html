@@ -1,0 +1,40 @@
+{% extends "game/base.html" %}
+
+{% load priceformat %}
+{% load humanize %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+<script type='text/javascript'>
+$(document).ready(function() {
+    {% if user.is_authenticated %}
+    show_portfolio();
+    {% else %}
+    show_intro();
+    {% endif %}
+    {% if preload_word %}
+    show_word({{ preload_word.id }});
+    {% else %}
+    show_random();
+    {% endif %}
+});
+</script>
+
+{% include "game/welcome/_sub.html" %}
+
+{% include "game/welcome/_left.html" %}
+
+{% endblock %}
+
+{% block footer %}
+Feedback welcome at <a href='http://twitter.com/pretweeting' target='_blank'>@pretweeting</a> or <a href='mailto:pretweeting@gmail.com'>pretweeting@gmail.com</a>.
+<br/>
+Get a pretweeting widget at <a href='http://{{ data_url }}'>{{ data_url }}</a>.
+<br/>
+Thanks to <a href='http://paradeofkites.com' target='_blank'>Catherine Herdlick</a>, <a href='http://twitter.com/wtsui' target='_blank'>Will Tsui</a>, Robert Vogt, Vincent Mo, and Stacey Shapiro.
+<br/>
+{% endblock %}

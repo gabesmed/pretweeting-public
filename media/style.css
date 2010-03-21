@@ -1,0 +1,335 @@
+body {
+  font-family: georgia;
+  color: #444;
+  background: url('/static_media/bg.png') repeat-y;
+  background-color: #262626;
+  margin: 0px;
+}
+
+table, td, tr {
+  vertical-align: top;
+  border-spacing: 0px;
+  padding: 1px 5px 1px 0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+  color: black;
+}
+
+hr {
+  width: 100%;
+  border: 0;
+  border-top: 3px solid #ddd;
+}
+
+img {
+  border: 0;
+}
+
+a, a:visited {
+  text-decoration: none;
+  color: #753;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.faint, .faded {
+  color: #aaa;
+}
+
+.small {
+  font-size: 10pt;
+}
+
+.bigprice {
+  font-size: 18pt;
+}
+
+#banner {
+  color: black;
+}
+
+#frame {
+    width: 840px;
+    background: #fafafa;
+    padding: 20px;
+}
+
+#content {
+}
+
+#notice {
+  background: #753;
+  font-weight: bold;
+  color: white;
+  padding: 3px;
+}
+
+#play {
+  display: inline-block;
+  background: #080;
+  color: white;
+  padding: 5px;
+  font-size: 24pt;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+a.call_to_action, a.call_to_action:visited {
+  display: inline-block;
+  background: #080;
+  color: white;
+  padding: 5px;
+  font-size: 12pt;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#discovery_container {
+  width: 400px;
+}
+
+#discovery_header {
+  height: 25px;
+  margin-bottom: 8px;
+}
+
+#discovery_header a, #discovery_header a:visited {
+  background: #555;
+  color: white;
+  text-decoration: none;
+  padding: 2px 4px;
+}
+
+#discovery_header a.active {
+  background: #753;
+}
+
+#discovery_content {
+    font-size: 14pt;
+}
+
+#sub_container {
+    border: 3px solid #ccc;
+    background-color: white;
+    margin-left: 10px;
+    float: right;
+    width: 406px;
+}
+
+#word_chart {
+  width: 400px;
+  height: 200px;
+}
+
+#search_bar {
+  background: #ddd;
+  padding: 3px;
+  padding-bottom: 6px;
+}
+
+#sub_content {
+  font-size: 10pt;
+}
+
+#random_link {
+  float: right;
+  line-height: 18pt;
+  font-size: 10pt;
+}
+
+#footer {
+    clear: both;
+}
+
+#debug_sql {
+    font-family: courier;
+    color: #ccc;
+    font-size: 10pt;
+}
+
+li .debug_sql_query {
+    margin: 10px;
+}
+
+ul.errorlist {
+    list-style: none;
+    margin-left: 0em;
+    padding-left: 0em;
+}
+ul.errorlist li {
+    margin-left: 0em;
+    font-weight: bold;
+    padding-left: 0em;
+    background-color: #fdd;
+    color: black;
+    display: inline;
+    padding: 3px;
+    margin: 3px;
+}
+
+.header {
+    font-size: 14pt;
+    margin-bottom: 3px;
+}
+
+.section_top {
+  margin-top: 0px;
+}
+
+.page_link_set {
+  line-height: 1.7em;
+  margin-bottom: 5px;
+}
+
+.page_link_set a, .page_link_set a:visited {
+    padding: 1px 2px;
+    margin-left: 2px;
+    background-color: #ddd;
+    color: black;
+    text-decoration: none;
+}
+.page_link_set a.active, .page_link_set a.active:visited {
+    background-color: #753;
+    color: white;
+}
+
+.up, .up:visited {
+  color: #0a0;
+}
+.down, .down:visited {
+  color: #a00;
+}
+.nochange, .nochange:visited {
+}
+
+.slots {
+  color: #aaa;
+}
+
+#portfolio {
+  font-size: 14pt;
+}
+
+#help {
+  font-size: 12pt;
+}
+
+#suggested_words {
+  font-size: 12pt;
+}
+
+#leaderboard table {
+  width: 400px;
+}
+
+#leaderboard {
+  font-size: 13pt;
+}
+
+#leaderboard .header {
+  margin-top: 0px;
+  text-align: center;
+}
+
+#wordlist {
+  font-size: 10pt;
+}
+
+#wordlist td {
+  width: 130px;
+}  
+
+#leaderboard_options a, #leaderboard_options a:visited, #trends_options a, #trends_options a:visited {
+  font-weight: bold;
+  background: #eee;
+  padding: 0px 3px;
+  margin-right: 2px;
+}
+#trends_options a.active, #leaderboard_options a.active {
+  color: black;
+}
+
+#order_response {
+  background: #555;
+  color: white;
+  text-align: center;
+  font-size: 14pt;
+  font-weight: bold;
+  line-height: 1.4em;
+}
+
+#chat {
+  font-size: 0.7em;
+}
+
+#chat ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#chat li {
+  padding: 2px;
+  display: block;
+  margin-bottom: 2px;
+}
+#chat li .clear {
+  clear: left;
+}
+#chat li img {
+  float: left;
+  height: 40px;
+  width: 40px;
+  margin-right: 4px;
+}
+#chat li.you {
+  background: #ddd;
+}
+#chat li.official {
+  background: #ddd;
+}
+
+#word_content {
+  padding-top: 8px;
+  padding: 3px;
+}
+
+#purchasing {
+  background: #ddd;
+  padding: 3px;
+}
+
+#sell_grid {
+  margin-bottom: 10px;
+}
+
+#buy_grid {
+  border-top: 2px solid #eee;
+  padding-top: 10px;
+}
+
+#buy_grid ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#buy_grid div {
+  padding: 3px;
+}
+
+#buy_grid #buy_btn {
+  font-size: 12pt;
+}
+
+ul.trends {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,76 @@
+<VirtualHost *>
+    ServerName www.pretweeting.com
+    Redirect / http://pretweeting.com
+</VirtualHost>
+
+<VirtualHost *>
+    ServerName pretweeting.com
+    ServerAlias data.pretweeting.com pretweeting.com
+
+    DocumentRoot /home/admin/pretweeting/media
+
+    Alias /crossdomain.xml /home/admin/www/static_pretweeting/crossdomain.xml
+    Alias /static_media /home/admin/pretweeting/media
+
+    <Directory /home/admin/pretweeting/media>
+    Order allow,deny
+    Allow from all
+    </Directory>
+
+    WSGIScriptAlias / /home/admin/pretweeting/deploy/deploy.wsgi
+
+    <Directory /home/admin/pretweeting/deploy>
+    Order allow,deny
+    Allow from all
+    </Directory>
+</VirtualHost>
+
+----- prelaunch
+
+<VirtualHost *>
+    ServerName www.pretweeting.com
+    Redirect / http://pretweeting.com
+</VirtualHost>
+
+<VirtualHost *>
+    ServerName pretweeting.com
+    ServerAlias pretweeting.com
+
+    DocumentRoot /home/admin/pretweeting/media/prelaunch/
+
+    Alias /static_media /home/admin/pretweeting/media
+    Alias / /home/admin/pretweeting/media/prelaunch/
+    
+    <Directory /home/admin/pretweeting/media>
+    Order allow,deny
+    Allow from all
+    </Directory>
+    
+    <Directory /home/admin/pretweeting/media/prelaunch>
+    Order allow,deny
+    Allow from all
+    </Directory>
+    
+</VirtualHost>
+
+<VirtualHost *>
+    ServerName prelaunch.pretweeting.com
+    ServerAlias prelaunch.pretweeting.com
+
+    DocumentRoot /home/admin/pretweeting/media
+
+    Alias /crossdomain.xml /home/admin/www/static_pretweeting/crossdomain.xml
+    Alias /static_media /home/admin/pretweeting/media
+
+    <Directory /home/admin/pretweeting/media>
+    Order allow,deny
+    Allow from all
+    </Directory>
+
+    WSGIScriptAlias / /home/admin/pretweeting/deploy/deploy.wsgi
+
+    <Directory /home/admin/pretweeting/deploy>
+    Order allow,deny
+    Allow from all
+    </Directory>
+</VirtualHost>

@@ -1,0 +1,38 @@
+{% extends "data/base.html" %}
+
+{% load priceformat %}
+{% load humanize %}
+
+{% block head %}
+
+<script type='text/javascript'>
+$(document).ready(function() {
+    {% if preload_word %}
+    show_word({{ preload_word.id }});
+    {% else %}
+    show_random();
+    {% endif %}
+});
+</script>
+
+{% endblock %}
+
+{% block breadcrumbs %}
+<span class='up'>&#9650;</span>&nbsp;
+<a id='banner' href='/'>pretweeting data</a>
+{% endblock %}
+
+{% block content %}
+
+{% include "data/welcome/_sub.html" %}
+
+{% include "data/welcome/_left.html" %}
+
+{% endblock %}
+
+{% block footer %}
+<div class='small'>
+    <hr/>
+    play the game at <a href='http://{{ game_url }}'>{{ game_url }}</a>!
+</div>
+{% endblock %}

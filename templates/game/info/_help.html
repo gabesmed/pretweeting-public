@@ -1,0 +1,14 @@
+{% load priceformat %}
+<div id='help'>
+<p><b>Amass (virtual) riches every round by buying and selling words on twitter.</b></p>
+
+<p>Words are priced based on how often they're mentioned on twitter. A word that costs $10 has been mentioned in one percent of all recent tweets.</p>
+
+<p><b>So how to win? Predict what's going to be hot, buy it up ("pretweet it!") before it hits twitter, and you'll make a killing once people start talking about it.</b></p>
+
+<p>You get ${{ latest_round.starting_cash|currency }} to start buying words, and have {{ max_slots }} slots available in your portfolio. Most words only take one of these slots (<span class='slots'>&bull;</span>), but popularly held words can take up to 5 (<span class='slots'>&bull;&bull;&bull;&bull;&bull;</span>).</p>
+
+<p>There is a {{ commission }}% fee for each sale. The minimum purchase price for any word is ${{ min_buy_price|currency }}. Only tweets in the <b>United States</b> are counted for simplicity.
+
+<p>Pretweeting is a project by Gabe Smedresman (<a href='http://twitter.com/gabesmed' target='_blank'>@gabesmed</a>).</p>
+</div>

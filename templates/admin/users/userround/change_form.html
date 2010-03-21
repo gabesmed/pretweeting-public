@@ -1,0 +1,91 @@
+{% extends "admin/change_form.html" %}
+
+{% load priceformat %}
+{% load i18n %}
+
+{% block after_field_sets %}
+
+<p>
+    Total gains in round: ${{ userround_delta|currency }}.
+    Total gains from holdings: ${{ sum_gains|currency }}.
+</p>
+
+<fieldset class='module'>
+    <h2>Holdings</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Word</th>
+                <th>Quantity</th>
+                <th>Slots</th>
+                <th>History</th>
+                <th></th>
+                <th></th>
+                <th>Total gains</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for holding, history, total_gains in holding_histories %}
+        <tr class='{% cycle "row1" "row2" %} has_original'>
+            <td class='original'>
+                {{ holding.word.content }}
+            </td>
+            <td>{{ holding.quantity|quantity }}</td>
+            <td>{{ holding.slots }}</td>
+            <td>
+                {% for holding_history, order in history %}
+
+                {% if holding_history %}
+                HOLD {{ holding_history.quantity }}<br/>
+                {% endif %}
+                {% if order %}
+                <strong>
+                    {{ order.order_type_description|upper }}
+                    {{ order.quantity|quantity }}
+                </strong>
+                <br/>
+                {% endif %}
+                {% endfor %}
+                {# current #}
+                
+                HOLD {{ holding.quantity|quantity }}<br/>
+            </td>
+            <td>
+                {% for holding_history, order in history %}
+                {% if holding_history %}
+                {{ holding_history.change|plusminuspercent|safe }}<br/>
+                {% endif %}
+                {% if order %}
+                at ${{ order.price|currency }}<br/>
+                {% endif %}
+                {% endfor %}
+                {# current #}
+                {{ holding.change|plusminuspercent|safe }}<br/>
+            </td>
+            <td>
+                {% for holding_history, order in history %}
+                {% if holding_history %}
+                ${{ holding_history.value_begin|currency }} ->
+                ${{ holding_history.value_end|currency }}
+                <br/>
+                {% endif %}
+                {% if order %}
+                for ${{ order.cash_exchanged|currency }}
+                <br/>
+                {% endif %}
+                {% endfor %}
+                {# current #}
+                ${{ holding.value_at_purchase|currency }} ->
+                ${{ holding.current_value|currency }}
+                <br/>
+            </td>
+            <td>
+                ${{ total_gains|currency }}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</fieldset>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% load escapehash %}
+{% load priceformat %}
+{% load humanize %}
+{% load wordlink %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+    url = "/words/chart_data/{{ word.id }}";
+    swfobject.embedSWF(
+      "{{ MEDIA_URL }}open-flash-chart.swf", "word_chart",
+      "400", "200", "9.0.0", "expressInstall.swf", {"data-file": url} );
+});
+</script>
+
+<div id='word_content'>
+    
+    <div id='word_chart'>
+    </div>
+    <div id='order_response'>
+    </div>
+    <div style='float: right;' class='small faded'>All times in PST.</div>
+    <div class='bigprice'>
+        {{ word.content }}
+    </div>
+    <p>
+        Mentioned in {{ percent|floatformat:2 }}% of twitter messages.
+    </p>
+    
+    link: <input type='text' value='{{ link }}' onclick='this.select();'/><br/>
+    embed: <input type='text' value='{{ embed }}' onclick='this.select();'/><br/>
+</div>

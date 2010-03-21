@@ -1,0 +1,43 @@
+<script>
+$(document).ready(function() {
+   $("#compare_submit").click(commit_compare); 
+});
+
+function commit_compare() {
+    words = [];
+    $("#word_form input[type=text]").each(function() {
+        val = $(this).val();
+        val = val.replace('@', '%40');
+        val = val.replace('#', '%23');
+        if(val != '') {
+            words.push(val);
+        }
+    });
+    words = words.join(',');
+    show_sub_content('/words/compare/' + words);
+}
+
+</script>
+<div id='discovery_container'>
+    <div id='discovery_header'>
+        <a id='help_link' href='javascript:;' onclick='javascript:;'>Compare words on twitter</a>
+        <span id='discovery_loading' style='float: right; display: none;'>
+            <img src='{{ MEDIA_URL }}loading.gif'/>
+        </span>
+    </div>
+    <div id='discovery_content'>
+        <div id='word_form'>
+            <label for='word1'>&#9654;</label>
+            <input id='word1' type='text' value=''/><br/>
+            <label for='word2'>&#9654;</label>
+            <input id='word2' type='text' value=''/><br/>
+            <label for='word3'>&#9654;</label>
+            <input id='word3' type='text' value=''/><br/>
+            <label for='word4'>&#9654;</label>
+            <input id='word4' type='text' value=''/><br/>
+            <label for='word5'>&#9654;</label>
+            <input id='word5' type='text' value=''/><br/>
+            <input id="compare_submit" type='submit' value='Compare'/><br/>
+        </div>
+    </div>
+</div>

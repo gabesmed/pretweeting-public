@@ -1,0 +1,33 @@
+ALTER TABLE `users_userround` ADD `created_on` DATETIME NOT NULL AFTER `round_id`;
+UPDATE `users_userround` SET created_on = NOW() WHERE 1;
+ALTER TABLE `users_userround` ADD `is_frozen` TINYINT( 1 ) NOT NULL DEFAULT '0';
+ALTER TABLE `users_userround` ADD `is_active` TINYINT( 1 ) NOT NULL DEFAULT '0';
+# set all of current round, is_active = True
+# all else, is_frozen = True
+
+# Thurs, Sep 3
+
+ALTER TABLE `users_holding` ADD `slots` SMALLINT( 5 ) NOT NULL AFTER `quantity` ;
+ALTER TABLE `users_order` ADD `tweeted` BOOL NULL ;
+
+from pretweeting.apps.users.models import Holding
+for h in Holding.objects.all():
+  h.slots = h.quantity * h.word.slots
+  h.save()
+
+## reverting
+
+DELETE FROM batches_count
+USING batches_batch, batches_count
+WHERE batches_count.batch_id = batches_batch.id
+AND batches_batch.tz_index != 1;
+
+DELETE FROM batches_batch WHERE tz_index != 1;
+
+DROP TABLE `batches_update`;
+ALTER TABLE `batches_batch` DROP `tz_index`;
+ ALTER TABLE `batches_batch` DROP `update_id`;
+ALTER TABLE `batches_batch` ADD `active` TINYINT( 1 ) NOT NULL DEFAULT '0';
+UPDATE `batches_batch` SET active=1 WHERE 1;
+ALTER TABLE `users_userround` DROP `tz_index`;
+ALTER TABLE `users_userprofile` DROP `tz_index`;

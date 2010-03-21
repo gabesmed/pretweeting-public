@@ -1,0 +1,11 @@
+{% load priceformat %}
+{% load wordlink %}
+{% load table %}
+
+<div class='header up'><b>Make a (virtual) profit by buying and selling words on twitter.</b> Predict what's going to be hot and buy it up before it hits twitter, and you'll make a killing once people start talking about it. (no actual money required!)</div>
+
+<a id='play' href='/auth/auth/'>Sign in to play!</a>
+<div class='small faint'>You'll need a twitter account. <a href='https://twitter.com/signup' target='_blank'>Don't have one? It's easy to sign up!</a> Once you sign in, we'll have you follow @pretweeting so you can get direct messages from us. We won't send out messages without your permission.</div>
+<br/>
+<div>Words being traded right now:</div>
+{% include "game/user/_suggestions.html" %}

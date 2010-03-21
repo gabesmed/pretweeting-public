@@ -1,0 +1,129 @@
+{% load humanize %}
+{% load priceformat %}
+{% load wordlink %}
+
+<script type='text/javascript'>
+function choose_leaderboard(option) {
+    $("#leaderboard > div").hide();
+    $("#" + option).show();
+    $("#leaderboard_options a").removeClass("active");
+    $("#leaderboard_options a#choose_" + option).addClass("active");
+}
+$(document).ready(function() {
+    choose_leaderboard('current_leaderboard');
+    $("#choose_current_leaderboard").click(function() {
+        choose_leaderboard('current_leaderboard');
+    });
+    $("#choose_all_time_leaderboard").click(function() {
+        choose_leaderboard('all_time_leaderboard');
+    });
+});
+</script>
+
+<div id='leaderboard_options'>
+    <a href='javascript:;' id='choose_current_leaderboard'>This week</a>
+    <a href='javascript:;' id='choose_all_time_leaderboard'>All Time</a>
+</div>
+
+<div id='leaderboard'>
+
+<div id='current_leaderboard'>
+
+<h4 class='header'>Top 40 portfolios</h4>
+
+<table>
+{% for user_round, prev_round in user_rounds %}
+    {% if forloop.first %}
+    <tr>
+        <td colspan='4' class='small faint' style='text-align: center;'>
+            Current leader!
+        </td>
+    </tr>
+    {% endif %}
+    <tr>
+        <td rowspan="2">
+            <a href='http://twitter.com/{{ user_round.user.username }}' target='_blank'>
+            <img style='float: left;' width='48' height='48' src='{{ user_round.user.get_profile.image_url }}'/>
+            </a>
+        </td>
+        <td>
+            <a href='http://twitter.com/{{ user_round.user.username }}' target='_blank'>
+                {{ user_round.user.username }}
+            </a>
+        </td>
+        <td>
+            <b>${{ user_round.current_value|currency }}</b>
+        </td>
+        <td>
+            {{ user_round.change|plusminuspercent|safe }}
+        </td>
+    </tr>
+    <tr class='small faint'>
+        <td colspan='3'>
+            <div>
+                {% if user_round.last_trade %}
+                Last trade {{ user_round.last_trade|timesince }} ago.
+                {% endif %}
+                {% if user_round.num_resets %}
+                ({{ user_round.num_resets }} reset{{ user_round.num_resets|pluralize }})
+                {% endif %}
+            </div>
+            <div>
+                {% if prev_round %}
+                {{ prev_round.round.name }} {{ prev_round.change|plusminuspercent|safe }}.
+                {% endif %}
+            </div>
+        </td>
+    </tr>
+    {% if forloop.first %}
+    <tr>
+        <td colspan='4' class='small faint' style='text-align: center;'>
+            <hr/>
+        </td>
+    </tr>
+    {% endif %}
+{% endfor %}
+</table>
+
+</div>
+
+<div id='all_time_leaderboard'>
+    
+    <h4 class='header'>Top 20 all-time portfolios</h4>
+
+    <table>
+    {% for user_round in all_time_winners %}
+        <tr>
+            <td rowspan="2">
+                <a href='http://twitter.com/{{ user_round.user.username }}' target='_blank'>
+                <img style='float: left;' width='48' height='48' src='{{ user_round.user.get_profile.image_url }}'/>
+                </a>
+            </td>
+            <td>
+                <a href='http://twitter.com/{{ user_round.user.username }}' target='_blank'>
+                    {{ user_round.user.username }}
+                </a>
+            </td>
+            <td>
+                <b>${{ user_round.current_value|currency }}</b>
+            </td>
+            <td>
+                {{ user_round.change|plusminuspercent|safe }}
+            </td>
+        </tr>
+        <tr class='small faint'>
+            <td colspan='3'>
+                <div>
+                    {{ user_round.round.name }}
+                    {% if user_round.num_resets %}
+                    ({{ user_round.num_resets }} reset{{ user_round.num_resets|pluralize }})
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    
+</div>
+
+</div>

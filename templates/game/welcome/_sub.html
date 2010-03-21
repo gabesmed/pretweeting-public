@@ -1,0 +1,47 @@
+<script type='text/javascript'>
+
+var sub_content_last_word = '';
+var checking_search_interval = 0;
+
+function check_search_word() {
+    word = $("#search_word").val();
+    
+    if(word != sub_content_last_word) {
+        perform_search();
+        sub_content_last_word = word;
+    }
+}
+
+function perform_search() {
+    word = $("#search_word").val();
+    real_word = word.replace(/[^'a-zA-Z0-9_#@-]/, '');
+    
+    if(real_word != '') {
+        $("#search_word").val(real_word);
+        search_word(real_word);
+    }
+    return false;
+}
+
+$(document).ready(function() {
+    $("#search_word").delayedObserver(check_search_word, 0.5);
+    $("#search_btn").click(perform_search);
+    $("#search_form").submit(perform_search);
+});
+</script>
+
+<div id='sub_container'>
+    <div id='search_bar'>
+        <a id='random_link' href='javascript:;' onclick='show_random()'>random</a>
+        <form id='search_form'>
+        <input type="text" id="search_word" />
+        <input type='submit' id='search_btn' value='Search'/>
+        <span id='sub_loading' style='display: none;'>
+            <img src='{{ MEDIA_URL }}loading.gif'/>
+        </span>
+        </form>
+        
+    </div>
+    <div id='sub_content'>
+    </div>
+</div>

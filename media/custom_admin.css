@@ -1,0 +1,8 @@
+.up, .up:visited {
+  color: #0a0;
+}
+.down, .down:visited {
+  color: #a00;
+}
+.nochange, .nochange:visited {
+}

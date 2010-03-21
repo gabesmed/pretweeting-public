@@ -1,0 +1,32 @@
+{% load escapehash %}
+{% load humanize %}
+{% load priceformat %}
+{% load table %}
+{% load wordlink %}
+
+<div id='wordlist'>
+<table>
+{% table word_price word_prices 3 %}
+    {% with word_price.0 as word %}
+    {% with word_price.1 as price %}
+    {% if table.startrow %}
+    <tr>
+    {% endif %}
+    <td>
+        {% wordlink word 10 %}
+        ${{ price|currency }}
+        {% slots_tag word %}
+    </td>
+    
+    {% if table.endrow %}
+    </tr>
+    {% endif %}
+    {% endwith %}
+    {% endwith %}
+{% endtable %}
+</table>
+
+{% include "game/words/_list_pagination.html" %}
+
+</div>
+<div id='debug_sql'><!-- sql_log --></div>

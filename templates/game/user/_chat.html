@@ -1,0 +1,103 @@
+<script type='text/javascript'>
+
+function update_chars() {
+    val = $("#chat_message_input").val();
+    remaining = 120 - val.length;
+    $("#char_count").html(remaining);
+}
+
+$(document).ready(function() {
+    load_chat();
+    
+    {% if user.is_authenticated %}
+    $("#chat_form").ajaxForm({
+        beforeSubmit: function() {
+            $("#chat_send_btn").val("Sending...");
+            $("#chat_send_btn").attr("disabled", true);
+        },
+        success: chat_done,
+        dataType: 'json'
+    });
+    $("#chat_message_input").keyup(update_chars);
+    update_chars();
+    {% endif %}
+});
+
+
+
+function chat_done(data) {
+    $("#chat_send_btn").val("Send");
+    $("#chat_send_btn").attr("disabled", false);
+    if(data['success']) {
+        $("#chat_status").html(data['message']);
+        $("#chat_message_input").val("");
+    } else {
+        $("#chat_status").html(data['error']);
+    }
+    
+}
+function load_chat() {
+    $("#chat_messages").html("<img src='{{ MEDIA_URL }}loading.gif'/>");
+    $.ajax({
+        url: "http://search.twitter.com/search.json",
+        type: "GET",
+        dataType: "jsonp",
+        data: {
+            q: "from:pretweeting OR #pretweeting",
+            rpp: 12
+        },
+        success: chat_loaded,
+        error: function() {
+            $("#chat_messages").html("There was an error loading chat.");
+        }
+    });
+}
+
+function chat_loaded(data) {
+    html = '';
+    $.each(data["results"], function(i, result) {
+        cls = '';
+        if(result['from_user'] == "{{ user.username }}") {
+            cls = 'you';
+        } else if(result['from_user'] == 'pretweeting') {
+            cls = 'official';
+        }
+        html += "<li class='" + cls + "'>";
+        html += result['from_user'] + ": ";
+        html += "<img src='" + result['profile_image_url'] + "'/>";
+        html += result["text"];
+        html += "<div class='clear'> </div>";
+        html += "</li>";
+    });
+    $("#chat_messages").html(html);
+}
+
+</script>
+
+<h4 class='section_top'>
+    Pretweeting chat
+    <a href='javascript:;' onclick='load_chat()'>reload</a>
+</h4>
+
+<div id='chat'>
+    {% if user.is_authenticated %}
+    <form id='chat_form' action='{% url chat %}' method='POST'>
+    <ul>
+        <li class='you'>
+            <img src='{{ user.get_profile.image_url }}'/>
+            <div>
+                {{ user.username }}: 
+                <input type='text' name='message' value='' id='chat_message_input'/> #pretweeting
+            </div>
+            <div class='small faded'>
+                <span id='chat_status'>chat will be posted to twitter</span>
+                <input type='submit' value='Send' id='chat_send_btn'/>
+                <span id='char_count'></span>
+            </div>
+        </li>
+    </ul>
+    </form>
+    {% endif %}
+    <ul id='chat_messages'>
+    </ul>
+</div>

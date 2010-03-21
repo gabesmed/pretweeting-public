@@ -1,0 +1,39 @@
+{% load escapehash %}
+{% load priceformat %}
+{% load humanize %}
+{% load wordlink %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+    url = "/words/compare_chart_data/{{ content_list }}";
+    swfobject.embedSWF(
+      "{{ MEDIA_URL }}open-flash-chart.swf", "word_chart",
+      "400", "200", "9.0.0", "expressInstall.swf", {"data-file": url} );
+});
+</script>
+
+<div id='word_content'>
+        
+    <div id='word_chart'>
+    </div>
+    <div id='order_response'>
+    </div>
+    <div style='float: right;' class='small faded'>All times in PST.</div>
+    {% for word, error in words_errors %}
+    {% if word %}
+    <span>
+        <span class='color{{ forloop.counter0 }}'>&#9654;</span>
+        {% wordlink word %}
+    </span>
+    {% endif %}
+    {% endfor %}
+    <br/>
+    
+    {% for word, error in words_errors %}
+    <ul class='errorlist'>
+    {% if error %}
+    <li>{{ error }}</li>
+    {% endif %}
+    </ul>
+    {% endfor %}
+</div>

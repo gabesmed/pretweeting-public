@@ -1,0 +1,20 @@
+{% load humanize %}
+{% load priceformat %}
+{% load wordlink %}
+{% load table %}
+
+<table id='suggested_words'>
+{% table word_price suggested_word_prices 3 %}
+    {% if table.startrow %}
+    <tr>
+    {% endif %}
+    <td>
+        {% wordlink word_price.0 10 %}
+        ${{ word_price.1|currency }}
+    </td>
+    
+    {% if table.endrow %}
+    </tr>
+    {% endif %}
+{% endtable %}
+</table>

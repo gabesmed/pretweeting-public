@@ -1,0 +1,87 @@
+<script type='text/javascript'>
+
+$(document).ready(function() {
+    $("ul.trends li div").each(function() {
+        $(this).html(linkify($(this).html()));
+    });
+    choose_trends('nyt');
+});
+
+
+function linkify(text) {
+    words = text.split(/[\s]/);
+    html = '';
+    $.each(words, function(i, word) {
+        sanitized_word = word.replace(/[\.,;:\?!]/g, '').toLowerCase();
+        url_parsed_word = sanitized_word.replace(/#/g, '%23').replace(/@/g, '%40');
+        search_parsed_word = sanitized_word.replace(/\'/g, '!');
+        
+        html += "<a class='inline_word' href='/w/" + url_parsed_word + "' onclick=\"javascript:search_word('" + search_parsed_word + "'); return false;\">";
+        html += word;
+        html += "</a> ";
+    });
+    return html;
+}
+
+function choose_trends(option) {
+    $("#trends_containers > div").hide();
+    $("#" + option + "_container").show();
+    $("#trends_options a").removeClass("active");
+    $("#trends_options a#choose_" + option).addClass("active");
+}
+
+</script>
+
+<div id='trends_options'>
+    <a href='javascript:;' id='choose_nyt' onclick='choose_trends("nyt");'>TimesWire</a>
+    <a href='javascript:;' id='choose_twitter' onclick='choose_trends("twitter");'>Twitter</a>
+    <a href='javascript:;' id='choose_pretweeting' onclick='choose_trends("pretweeting");'>Pretweeting</a>
+</div>
+<div class='small faint'>
+    Click on the words below to look up prices.
+</div>
+<hr/>
+<div id='trends_containers'>
+    <div id='pretweeting_container' style='display: none;'>
+        <ul class='trends'>
+            {% for word in latest_words %}
+            <li>
+                <div>{{ word.content }}</div>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <p class='small'>
+            sourced from latest pretweeting orders
+        </p>
+    </div>
+    <div id='twitter_container' style='display: none;'>
+        <ul id='twitter_trends' class='trends'>
+            {% for trend in twitter_trends %}
+            <li>
+                <div>{{ trend }}</div>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <p class='small'>
+            trends sourced from 
+            <a href='http://twitter.com' target="_blank">search.twitter.com</a>.
+        </p>
+    </div>
+    <div id='nyt_container'>
+        <ul class='trends'>
+            {% for headline, summary in times_trends %}
+            <li class='small'>
+                <div><b> {{ headline }} </b></div>
+                <div> {{ summary }} </div>
+            </li>
+            {% endfor %}
+        </ul>
+    
+        <p class='small'>
+            trends sourced from 
+            <a href='http://www.nytimes.com/timeswire/index.html' target="_blank">new york times timeswire</a>.
+        </p>    
+    </div>
+</div>

@@ -1,0 +1,7 @@
+# all servers:
+pexpect
+pytz
+
+# web server
+memcached
+cmemcache
